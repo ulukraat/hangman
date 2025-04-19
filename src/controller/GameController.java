@@ -11,7 +11,7 @@ public class GameController {
     public GameController() {
         this.gameService = new GameService();
     }
-    public void start(){
+    public void start() throws InterruptedException {
         String word = gameService.getWord();
 
             System.out.println("Игра началась,размер слова - " + word.length());
@@ -21,10 +21,14 @@ public class GameController {
 
             gameService.updateWord(symbol);
             if (gameService.userIsFall){
+                Thread.sleep(1000);
+                System.out.println("У вас не осталось попыток,вы проиграли,слово было: " + gameService.getWord());
                 return;
             }
         }
-
-
+        if(gameService.gameOver()){
+            Thread.sleep(1000);
+            System.out.println("Вы угадали слово,вы победили");
+        }
     }
 }

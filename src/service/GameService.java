@@ -27,21 +27,28 @@ public class GameService {
     public void updateWord(char letter){
         StringBuilder updatedWord = new StringBuilder(currentState);
         int tryCounter = 5;
+        boolean found = false;
 
             if(word.contains(String.valueOf(letter))){
                 System.out.println("Вы нашли букву");
-                int position = word.indexOf(String.valueOf(letter));
-                updatedWord.setCharAt(position,letter);
-                System.out.println(updatedWord.toString());
-                if(gameOver()){
-                   System.out.println("Вы угадали слово");
-                   return;
+                for (int i = 0; i < word.length(); i++) {
+                    if (word.charAt(i) == letter) {
+                        if (updatedWord.charAt(i) != letter) {
+                            updatedWord.setCharAt(i, letter);
+                            found = true;
+                        }
+                    }
                 }
-            }else {
+                if (!found) {
+                    System.out.println("Это буква уже была угадана");
+                }else {
+                    System.out.println(updatedWord);
+                }
+            }
+            else {
                 System.out.println("Такого символа в букве нет,у вас осталось " + (tryCounter - fallCounter)  + " попыток");
                 fallCounter++;
-                if (fallCounter == 5) {
-                    System.out.println("У вас не осталось попыток,вы проиграли");
+                if (fallCounter > 5) {
                     userIsFall = true;
                     return;
                 }
@@ -53,6 +60,5 @@ public class GameService {
         return !currentState.contains("_");
     }
     public boolean userIsFall = false;
-    }
-
+}
 
